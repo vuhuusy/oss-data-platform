@@ -29,7 +29,7 @@ mcImage:
   pullPolicy: IfNotPresent
 
 ## minio mode, i.e. standalone or distributed
-mode: distributed ## other supported values are "standalone"
+mode: standalone ## other supported values are "standalone"
 
 ## Additional labels to include with deployment or statefulset
 additionalLabels: {}
@@ -90,8 +90,8 @@ runtimeClassName: ""
 ## rootUser and rootPassword is generated when not set
 ## Distributed MinIO ref: https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-multi-node-multi-drive.html
 ##
-rootUser: ""
-rootPassword: ""
+rootUser: "minioadmin"
+rootPassword: "minioadmin"
 
 ## Use existing Secret that store following variables:
 ##
@@ -120,7 +120,7 @@ bucketRoot: ""
 # Number of drives attached to a node
 drivesPerNode: 1
 # Number of MinIO containers running
-replicas: 16
+replicas: 1
 # Number of expanded MinIO clusters
 pools: 1
 
@@ -142,7 +142,7 @@ trustedCertsSecret: ""
 ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
 ##
 persistence:
-  enabled: true
+  enabled: false
   annotations: {}
 
   ## A manually managed Persistent Volume and Claim
@@ -290,7 +290,7 @@ podLabels: {}
 ##
 resources:
   requests:
-    memory: 16Gi
+    memory: 512Mi
 
 ## List of policies to be created after minio install
 ##
@@ -430,7 +430,12 @@ makeServiceAccountJob:
 
 ## List of buckets to be created after minio install
 ##
-buckets: []
+buckets:
+  - name: metastore
+    policy: none
+    purge: false
+    versioning: false
+    objectlocking: false
   #   # Name of the bucket
   # - name: bucket1
   #   # Policy to be set on the
