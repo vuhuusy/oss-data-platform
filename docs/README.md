@@ -62,6 +62,30 @@ rm get_helm.sh
 helm version
 ```
 
+## Usefull bash aliases
+
+```bash
+nano ~/.bashrc
+
+```
+
+alias k='kubectl'
+
+alias kgp='kubectl get pods'
+alias kgpa='kubectl get pods -A'
+alias kgn='kubectl get nodes'
+alias kgs='kubectl get svc'
+alias kga='kubectl get all'
+alias kd='kubectl describe'
+alias kdp='kubectl describe pod'
+alias kl='kubectl logs'
+alias kx='kubectl exec -it'
+alias kaf='kubectl apply -f'
+```
+
+source ~/.bashrc
+```
+
 # System Components
 
 ## Set up a 3-node Kubernetes cluster using Kind
