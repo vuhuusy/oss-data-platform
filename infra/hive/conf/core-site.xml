@@ -16,7 +16,7 @@
     </property>
     <property>
         <name>fs.s3a.connection.ssl.enabled</name>
-        <value>true</value>
+        <value>false</value>
     </property>
     <property>
         <name>fs.s3a.endpoint</name>
