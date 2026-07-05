@@ -16,19 +16,12 @@ spec:
       containers:
         - name: hive-metastore
           image: hive-metastore:3.0.0
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9083
-          volumeMounts:
-            - name: metastore-cfg-vol
-              mountPath: /opt/hive-metastore/conf/metastore-site.xml
-              subPath: metastore-site.xml
-            - name: metastore-cfg-vol
-              mountPath: /opt/hadoop/etc/hadoop/core-site.xml
-              subPath: core-site.xml
-          command: ["/opt/hive-metastore/bin/start-metastore"]
-          args: ["-p", "9083"]
-          imagePullPolicy: IfNotPresent
-      volumes:
-        - name: metastore-cfg-vol
-          configMap:
-            name: metastore-cfg
+          env:
+            - name: CORE_SITE
+              value: /opt/hadoop/etc/hadoop/core-site.xml
+            - name: METASTORE_SITE
+              value: /opt/hive-metastore/conf/metastore-site.xml
+          command: ["/opt/entrypoint.sh"]
