@@ -47,7 +47,7 @@ updateStrategy:
 image:
   repository: apache/kyuubi
   pullPolicy: IfNotPresent
-  tag: ~
+  tag: 1.11.1-spark-iceberg
 
 imagePullSecrets: []
 
@@ -56,7 +56,7 @@ serviceAccount:
   # Specifies whether a ServiceAccount should be created
   create: true
   # Specifies ServiceAccount name to be used (created if `create: true`)
-  name: ~
+  name: kyuubi
   # Annotations to add to the ServiceAccount
   annotations: {}
 
@@ -76,8 +76,8 @@ rbac:
   # RBAC rules
   rules:
     - apiGroups: [""]
-      resources: ["pods"]
-      verbs: ["create", "list", "delete"]
+      resources: ["pods", "pods/log", "services", "configmaps"]
+      verbs: ["get", "list", "watch", "create", "delete", "patch", "update"]
 
 service:
   # configuration of the headless service
