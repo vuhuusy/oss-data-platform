@@ -21,6 +21,6 @@ docker build -t hive-metastore:3.0.0 infra/hive/
 kind load docker-image hive-metastore:3.0.0 --name lakehouse
 
 # Deploy Hive Metastore
-kubectl apply -f infra/hive/init/job.yaml -n metastore
+kubectl apply -f infra/hive/job.yaml -n metastore
 kubectl apply -f infra/hive/deployment.yaml -n metastore
 kubectl apply -f infra/hive/service.yaml -n metastore

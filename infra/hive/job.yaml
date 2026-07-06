@@ -3,6 +3,7 @@ kind: Job
 metadata:
   name: hive-schema-init
 spec:
+  ttlSecondsAfterFinished: 60
   template:
     metadata:
       labels:
@@ -10,7 +11,7 @@ spec:
     spec:
       containers:
       - name: hive-schema-init
-        image: hive-init:4.2.0
+        image: hive-metastore:3.0.0
         command: ["/bin/sh", "-c"]
         args:
         - |
