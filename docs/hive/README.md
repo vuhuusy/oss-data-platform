@@ -17,12 +17,8 @@ helm upgrade --install hms-postgresql -f infra/hive/hms-postgresql/values.yaml b
 # Build the Hive Docker image
 docker build -t hive-metastore:3.0.0 infra/hive/
 
-# Build the Hive init Docker image
-docker build -t hive-init:4.2.0 infra/hive/init/
-
 # Load the Hive Docker image into the kind cluster
 kind load docker-image hive-metastore:3.0.0 --name lakehouse
-kind load docker-image hive-init:4.2.0 --name lakehouse
 
 # Deploy Hive Metastore
 kubectl apply -f infra/hive/init/job.yaml -n metastore
