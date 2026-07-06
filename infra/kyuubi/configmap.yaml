@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kyuubi-configs
+  namespace: compute
+data:
+  kyuubi-defaults.conf: |
+    kyuubi.engine.type=SPARK_SQL
+    kyuubi.engine.share.level=GROUP
+    kyuubi.session.engine.check.interval=PT5M
+    kyuubi.session.engine.idle.timeout=PT30M
+    kyuubi.session.engine.initialize.timeout=PT10M
+    kyuubi.frontend.thrift.binary.bind.host=0.0.0.0
+    kyuubi.frontend.rest.bind.host=0.0.0.0
+    kyuubi.frontend.advertised.host=kyuubi-thrift-binary.compute.svc.cluster.local
+    kyuubi.engine.spark.home=/opt/spark
+
+    # LDAP Authentication
+    # kyuubi.authentication=LDAP
+    # # In-cluster LDAP service in the iam namespace
+    # kyuubi.authentication.ldap.url=ldap://openldap.iam.svc.cluster.local:389
+    # kyuubi.authentication.ldap.baseDN=dc=example,dc=com
+    # kyuubi.authentication.ldap.binddn=cn=admin,dc=example,dc=com
+    # kyuubi.authentication.ldap.bindpw=AdminStrongPass123!
+    # kyuubi.authentication.ldap.domain=example.com
+    # kyuubi.authentication.ldap.userDNPattern=uid=%s,dc=example,dc=com
+
+    # HA Zookeeper
+    kyuubi.ha.addresses=zookeeper.metastore.svc.cluster.local:2181
+    kyuubi.ha.namespace=kyuubi
+
+    # Spark on K8s
+    spark.master=k8s://https://kubernetes.default.svc:443
+    spark.submit.deployMode=cluster
+    spark.kubernetes.namespace=compute
+    spark.kubernetes.authenticate.driver.serviceAccountName=spark
+
+    # Pure Spark image for driver/executor pods
+    spark.kubernetes.container.image=apache/spark:3.5.8-iceberg
+    spark.kubernetes.driver.container.image=apache/spark:3.5.8-iceberg
+    spark.kubernetes.executor.container.image=apache/spark:3.5.8-iceberg
+    spark.kubernetes.container.image.pullPolicy=IfNotPresent
+
+    # Resources
+    spark.kubernetes.driver.request.cores=1
+    spark.kubernetes.executor.request.cores=1
+    spark.driver.memory=1g
+    spark.executor.memory=1g
+
+    # JAR staging — Kyuubi uploads the engine jar here
+    kyuubi.kubernetes.spark.autoCreateFileUploadPath.enabled=true
+    spark.kubernetes.file.upload.path=s3a://jars/kyuubi/spark-upload
+
+    # Iceberg
+    spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
+    spark.sql.catalogImplementation=hive
+    spark.sql.catalog.iceberg=org.apache.iceberg.spark.SparkCatalog
+    spark.sql.catalog.iceberg.type=hive
+    spark.sql.catalog.iceberg.uri=thrift://hive-metastore.metastore.svc.cluster.local:9083
+    spark.sql.defaultCatalog=iceberg
+
+    # Dynamic Allocation
+    spark.dynamicAllocation.enabled=true
+    spark.dynamicAllocation.shuffleTracking.enabled=true
+
+    spark.dynamicAllocation.minExecutors=1
+    spark.dynamicAllocation.maxExecutors=10
+    spark.dynamicAllocation.initialExecutors=5
+
+    spark.dynamicAllocation.executorIdleTimeout=300s
+    spark.dynamicAllocation.cachedExecutorIdleTimeout=600s
+    spark.dynamicAllocation.schedulerBacklogTimeout=20s
+    spark.dynamicAllocation.sustainedSchedulerBacklogTimeout=20s
+    
+    spark.cleaner.periodicGC.interval=5min
+
+    # Adaptive Query Execution
+    spark.sql.adaptive.enabled=true
+    spark.sql.adaptive.forceApply=false
+    spark.sql.adaptive.logLevel=info
+    spark.sql.autoBroadcastJoinThreshold=-1
+    spark.sql.adaptive.localShuffleReader.enabled=true
+    spark.sql.adaptive.coalescePartitions.enabled=true
+    spark.sql.adaptive.advisoryPartitionSizeInBytes=128m
+    spark.sql.adaptive.coalescePartitions.minPartitionNum=1
+    spark.sql.adaptive.coalescePartitions.initialPartitionNum=200
+    spark.sql.adaptive.skewJoin.enabled=true
+    spark.sql.adaptive.skewJoin.skewedPartitionFactor=5
+    spark.sql.adaptive.skewJoin.skewedPartitionThresholdInBytes=256M
+    spark.sql.adaptive.nonEmptyPartitionRatioForBroadcastJoin=0.2
+
+    # MinIO S3A
+    spark.hadoop.fs.s3a.endpoint=http://minio.storage.svc.cluster.local:9000
+    spark.hadoop.fs.s3a.access.key=minioadmin
+    spark.hadoop.fs.s3a.secret.key=minioadmin
+    spark.hadoop.fs.s3a.path.style.access=true
+    spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem
+    spark.hadoop.fs.s3a.connection.ssl.enabled=false
+    spark.hadoop.fs.s3a.committer.name=magic
+    spark.hadoop.fs.s3a.committer.magic.enabled=true
+    spark.hadoop.fs.s3a.committer.magic.track.commits.in.memory.enabled=false
+    spark.hadoop.fs.s3a.committer.abort.pending.uploads=true
+    spark.sql.sources.commitProtocolClass=org.apache.spark.internal.io.cloud.PathOutputCommitProtocol
+    spark.sql.parquet.output.committer.class=org.apache.spark.internal.io.cloud.BindingParquetOutputCommitter
