@@ -1,0 +1,27 @@
+dn: ou=svc,dc=lakehouse,dc=local
+objectClass: organizationalUnit
+ou: svc
+
+dn: cn=kyuubi-users,ou=groups,dc=lakehouse,dc=local
+objectClass: groupOfNames
+cn: kyuubi-users
+member: cn=admin,dc=lakehouse,dc=local
+
+dn: uid=kyuubi,ou=svc,dc=lakehouse,dc=local
+objectClass: inetOrgPerson
+objectClass: simpleSecurityObject
+cn: kyuubi
+sn: service
+uid: kyuubi
+userPassword: KyuubiBindPassword
+
+dn: uid=sy,ou=people,dc=lakehouse,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+cn: sy
+sn: Sy
+uid: sy
+uidNumber: 10001
+gidNumber: 10001
+homeDirectory: /home/sy
+userPassword: UserPassword

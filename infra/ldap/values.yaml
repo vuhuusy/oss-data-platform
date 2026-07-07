@@ -13,7 +13,7 @@ global:
   ##
   #imagePullSecrets: [""]
   ## ldapDomain , can be explicit (e.g dc=toto,c=ca) or domain based (e.g example.com)
-  ldapDomain: "example.org"
+  ldapDomain: "lakehouse.local"
   # Specifies an existing secret to be used for admin and config user passwords. The expected key are LDAP_ADMIN_PASSWORD and LDAP_CONFIG_ADMIN_PASSWORD.
   # existingSecret: ""
   ## Default Passwords to use, stored as a secret. Not used if existingSecret is set.
@@ -48,7 +48,7 @@ clusterDomain: cluster.local
 ##
 extraDeploy: []
 
-replicaCount: 3
+replicaCount: 1
 
 # Note: you need replication enabled to use readonly replicas!
 readOnlyReplicaCount: 0
@@ -58,9 +58,9 @@ image:
   #repository: bitnami/openldap
   #tag: 2.6.3
   # Temporary fix
-  repository: jpgouin/openldap
-  tag: 2.6.9-fix
-  pullPolicy: Always
+  repository: bitnamilegacy/openldap
+  tag: 2.6.10
+  pullPolicy: IfNotPresent
   pullSecrets: []
 
 # Set the container log level
@@ -84,7 +84,7 @@ service:
 
   # Disable if you do not want to expose port on service
   enableLdapPort: true
-  enableSslLdapPort: true
+  enableSslLdapPort: false
 
   ## List of IP addresses at which the service is available
   ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
@@ -149,7 +149,7 @@ env:
  LDAP_LOGLEVEL: "256"
  LDAP_REQUIRE_TLS: "false"
  LDAPTLS_REQCERT: "never"
- LDAP_ENABLE_TLS: "yes"
+ LDAP_ENABLE_TLS: "no"
  LDAP_SKIP_DEFAULT_TREE: "no"
  LDAP_ALLOW_ANON_BINDING: 'no'
 
@@ -238,7 +238,7 @@ initialSchema: "cosine,inetorgperson,nis"
 #     by * none
 
 replication:
-  enabled: true
+  enabled: false
   # Enter the name of your cluster, defaults to "cluster.local"
   clusterName: "cluster.local"
   retry: 60
@@ -251,7 +251,7 @@ replication:
   # tls_cacert: "/etc/ssl/certs/ca-certificates.crt"
 ## Persist data to a persistent volume
 persistence:
-  enabled: true
+  enabled: false
   ## database data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
@@ -281,8 +281,12 @@ customStartupProbe: {}
 ## @param resources.requests The requested resources for the OPENLDAP  containers
 ##
 resources:
-  limits: {}
-  requests: {}
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: "1"
+    memory: 1Gi
 ## Configure Pods Security Context
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
 ## @param podSecurityContext.enabled Enabled OPENLDAP  pods' Security Context
@@ -566,7 +570,7 @@ test:
 ## ltb-passwd
 # For more parameters check following file: ./charts/ltb-passwd/values.yaml
 ltb-passwd:
-  enabled : true
+  enabled : false
   image:
     tag: 5.2.3
   ingress:
