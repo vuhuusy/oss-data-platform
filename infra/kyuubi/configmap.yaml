@@ -15,15 +15,20 @@ data:
     kyuubi.frontend.advertised.host=kyuubi-thrift-binary.compute.svc.cluster.local
     kyuubi.engine.spark.home=/opt/spark
 
-    # LDAP Authentication
-    # kyuubi.authentication=LDAP
-    # # In-cluster LDAP service in the iam namespace
-    # kyuubi.authentication.ldap.url=ldap://openldap.iam.svc.cluster.local:389
-    # kyuubi.authentication.ldap.baseDN=dc=example,dc=com
-    # kyuubi.authentication.ldap.binddn=cn=admin,dc=example,dc=com
-    # kyuubi.authentication.ldap.bindpw=AdminStrongPass123!
-    # kyuubi.authentication.ldap.domain=example.com
-    # kyuubi.authentication.ldap.userDNPattern=uid=%s,dc=example,dc=com
+    # LDAP authentication
+    kyuubi.authentication=LDAP
+    kyuubi.authentication.ldap.url=ldap://openldap.iam.svc.cluster.local:389/
+    kyuubi.authentication.ldap.baseDN=dc=lakehouse,dc=local
+
+    # Kyuubi binds with this technical account to search LDAP when needed
+    # kyuubi.authentication.ldap.binddn=uid=kyuubi,ou=svc,dc=lakehouse,dc=local
+    # kyuubi.authentication.ldap.bindpw=KyuubiBindPassword
+
+    # JDBC username "sy" -> uid=sy,ou=people,dc=lakehouse,dc=local
+    kyuubi.authentication.ldap.userDNPattern=uid=%s,ou=people,dc=lakehouse,dc=local
+
+    # Optional allow-list. Omit this line to permit every LDAP user matching userDNPattern.
+    # kyuubi.authentication.ldap.userFilter=sy
 
     # HA Zookeeper
     kyuubi.ha.addresses=zookeeper.metastore.svc.cluster.local:2181
@@ -58,6 +63,7 @@ data:
     spark.sql.catalog.iceberg.type=hive
     spark.sql.catalog.iceberg.uri=thrift://hive-metastore.metastore.svc.cluster.local:9083
     spark.sql.defaultCatalog=iceberg
+    spark.sql.catalog.iceberg.warehouse=s3a://metastore/iceberg
 
     # Dynamic Allocation
     spark.dynamicAllocation.enabled=true
