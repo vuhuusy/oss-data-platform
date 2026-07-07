@@ -12,7 +12,7 @@ helm show values bitnami/postgresql > infra/hive/hms-postgresql/values.yaml
 kubectl create namespace metastore
 
 # Installing the Chart (toy-setup)
-helm upgrade --install hms-postgresql -f infra/hive/hms-postgresql/values.yaml bitnami/postgresql --namespace metastore --timeout 15m
+helm upgrade --install hms-postgresql -f infra/hive/hms-postgresql/values.yaml bitnami/postgresql -n metastore --timeout 15m
 
 # Build the Hive Docker image
 docker build -t hive-metastore:3.0.0 infra/hive/
