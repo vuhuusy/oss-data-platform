@@ -15,7 +15,7 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
         - |
-          /opt/hive/bin/schematool --verbose -initSchema -dbType postgres \
+          /opt/hive-metastore/bin/schematool --verbose -initSchema -dbType postgres \
           -driver org.postgresql.Driver -userName "hive" -passWord "hive" \
           -url "jdbc:postgresql://hms-postgresql.metastore.svc.cluster.local:5432/metastore?user=hive&password=hive&createDatabaseIfNotExist=true"
       restartPolicy: Never
