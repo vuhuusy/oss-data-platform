@@ -10,3 +10,20 @@ helm install starrocks starrocks/kube-starrocks -f infra/starrocks/values.yaml -
 ```
 
 kubectl port-forward svc/kube-starrocks-fe-service 8030:8030 -n compute &
+
+# Create External Catalog in StarRocks
+
+```sql
+CREATE EXTERNAL CATALOG lakehouse
+PROPERTIES
+(
+    "type" = "unified",
+    "unified.metastore.type" = "hive",
+    "hive.metastore.uris" = "thrift://hive-metastore.metastore.svc.cluster.local:9083",
+    "aws.s3.enable_ssl" = "false",
+    "aws.s3.enable_path_style_access" = "true",
+    "aws.s3.endpoint" = "http://minio.storage.svc.cluster.local:9000",
+    "aws.s3.access_key" = "minioadmin",
+    "aws.s3.secret_key" = "minioadmin"
+);
+```
