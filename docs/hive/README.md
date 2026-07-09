@@ -26,3 +26,8 @@ kubectl apply -f infra/hive/deployment.yaml -n metastore
 kubectl apply -f infra/hive/service.yaml -n metastore
 
 # TO DO: create custom Helm Chart for Hive Metastore and deploy it using Helm.
+
+# Delete the Hive Metastore deployment
+kubectl delete -f infra/hive/deployment.yaml -n metastore
+kubectl delete -f infra/hive/service.yaml -n metastore
+helm uninstall hms-postgresql -n metastore
