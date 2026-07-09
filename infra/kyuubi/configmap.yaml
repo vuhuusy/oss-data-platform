@@ -39,6 +39,7 @@ data:
     spark.submit.deployMode=cluster
     spark.kubernetes.namespace=compute
     spark.kubernetes.authenticate.driver.serviceAccountName=spark
+    spark.serializer=org.apache.spark.serializer.KryoSerializer
 
     # Pure Spark image for driver/executor pods
     spark.kubernetes.container.image=apache/spark:3.5.8-iceberg
