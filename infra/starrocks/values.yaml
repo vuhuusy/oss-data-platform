@@ -24,7 +24,7 @@ operator:
         labels: {}
   
   # TimeZone is used to set the environment variable TZ for pod, with Asia/Shanghai as the default.
-  timeZone: Asia/Shanghai
+  timeZone: Asia/Ho_Chi_Minh
   
   # Set the nameOverride values for creating the same resources with the parent chart.
   # In version v1.7.1 or before, there is only one chart called kube-starrocks, and the chart name is the prefix
@@ -44,15 +44,15 @@ operator:
       # image sliced by "repository:tag"
       repository: starrocks/operator
       tag: v1.11.5
-    imagePullPolicy: Always
+    imagePullPolicy: IfNotPresent
     replicaCount: 1
     resources:
       limits:
-        cpu: 500m
-        memory: 800Mi
+        cpu: 1
+        memory: 1Gi
       requests:
         cpu: 500m
-        memory: 400Mi
+        memory: 500Mi
     # By default, the operator will only set runAsNonRoot to true, allowPrivilegeEscalation to false, readOnlyRootFilesystem to true.
     # You can customize the securityContext for operator pod, e.g., drop capabilities, seccompProfile, etc.
     securityContext:
@@ -166,7 +166,7 @@ starrocks:
     #    memory: 800Mi
   
   # TimeZone is used to set the environment variable TZ for pod, with Asia/Shanghai as the default.
-  timeZone: Asia/Shanghai
+  timeZone: Asia/Ho_Chi_Minh
   
   # This configuration is used to integrate with an external system DataDog.
   # You can enable the integration by setting the enabled to true, e.g., datalog.log.enabled=true will enable datadog agent
@@ -235,8 +235,8 @@ starrocks:
     # annotations for starrocks cluster.
     annotations: {}
     # specify the BE/CN deployment or not.
-    enabledBe: true
-    enabledCn: false
+    enabledBe: false
+    enabledCn: true
     # When true, the operator waits for the FE StatefulSet to be fully rolled out (all replicas ready
     # and at the same revision) before updating BE/CN. This prevents a bad FE rollout from cascading
     # to BE/CN. Defaults to false for backward compatibility.
@@ -333,7 +333,7 @@ starrocks:
     image:
       # image sliced by "repository:tag"
       repository: starrocks/fe-ubuntu
-      tag: ""
+      tag: "3.5.19"
     imagePullPolicy: IfNotPresent
     # Specify the entrypoint for FE.
     # By default, the operator will use '/opt/starrocks/fe_entrypoint.sh' as a command and use '$(FE_SERVICE_NAME)' as args in the container spec.
@@ -467,12 +467,12 @@ starrocks:
     # resources for FE pod.
     resources:
       requests:
-        cpu: 4
-        memory: 4Gi
+        cpu: 500m
+        memory: 500Mi
       # If you want to remove one resource limit, e.g., cpu, you can set it to cpu: "unlimited".
       limits:
-        cpu: 8
-        memory: 8Gi
+        cpu: 1
+        memory: 1Gi
     # FE storageSpec for persistent metadata.
     # Note: Once set, the following fields will not be allowed to be modified.
     storageSpec:
@@ -656,11 +656,11 @@ starrocks:
     # When autoscaling of the CN statefulset is used, the `replicas` field is set to null
     # by the operator, and autoscaling is controlled by Horizontal Pod Autoscaling (HPA).
     # You should only uncomment and set the `replicas` field if autoscaling is disabled.
-    # replicas: 1
+    replicas: 1
     image:
       # image sliced by "repository:tag"
       repository: starrocks/cn-ubuntu
-      tag: ""
+      tag: "3.5.19"
     imagePullPolicy: IfNotPresent
     # Specify the entrypoint for CN.
     # By default, the operator will use '/opt/starrocks/cn_entrypoint.sh' as command, and use '$(FE_SERVICE_NAME)' as args in container spec.
@@ -820,12 +820,12 @@ starrocks:
     # define resources requests and limits for CN pods.
     resources:
       requests:
-        cpu: 4
-        memory: 8Gi
+        cpu: 500m
+        memory: 500Mi
       # If you want to remove one resource limit, e.g., cpu, you can set it to cpu: "unlimited".
       limits:
-        cpu: 8
-        memory: 8Gi
+        cpu: 1
+        memory: 1Gi
     # specify a storageclass name and request size.
     # Note: Once set, the following fields will not be allowed to be modified.
     storageSpec:
@@ -1025,7 +1025,7 @@ starrocks:
     image:
       # image sliced by "repository:tag"
       repository: starrocks/be-ubuntu
-      tag: ""
+      tag: "3.5.19"
     imagePullPolicy: IfNotPresent
     # Specify the entrypoint for BE.
     # By default, the operator will use '/opt/starrocks/be_entrypoint.sh' as command, and use '$(FE_SERVICE_NAME)' as args in the container spec.
@@ -1157,12 +1157,12 @@ starrocks:
     # resources for BE pod.
     resources:
       requests:
-        cpu: 4
-        memory: 4Gi
+        cpu: 500m
+        memory: 500Mi
       # If you want to remove one resource limit, e.g., cpu, you can set it to cpu: "unlimited".
       limits:
-        cpu: 8
-        memory: 8Gi
+        cpu: 1
+        memory: 2Gi
     # BE storageSpec for persistent storage.
     # Note: Once set, the following fields will not be allowed to be modified.
     storageSpec:
