@@ -21,3 +21,5 @@ kubectl apply -f infra/kyuubi/configmap.yaml -n compute
 kubectl apply -f infra/kyuubi/spark-rbac.yaml -n compute
 
 helm upgrade --install kyuubi infra/kyuubi/chart -f infra/kyuubi/chart/values.yaml -n compute
+
+kubectl port-forward svc/kyuubi-thrift-binary 10009:10009 -n compute
