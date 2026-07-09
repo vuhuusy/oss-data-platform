@@ -15,8 +15,8 @@ kubectl create namespace storage
 helm upgrade --install minio -f infra/minio/values.yaml minio/minio --namespace storage --timeout 15m
 
 # To access MinIO Console & API
-kubectl port-forward svc/minio-console 9001:9001 -n storage
-kubectl port-forward svc/minio 9000:9000 -n storage
+kubectl port-forward svc/minio-console 9001:9001 -n storage &
+kubectl port-forward svc/minio 9000:9000 -n storage &
 
 # Set TTL for Kyuubi Spark Staging Files in MinIO
 
@@ -29,3 +29,6 @@ mc ilm rule add minio/jars \
 
 mc ilm rule list minio/jars
 ```
+
+# Delete the Minio deployment
+helm uninstall minio -n storage
