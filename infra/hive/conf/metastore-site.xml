@@ -28,7 +28,7 @@
     </property>
     <property>
         <name>metastore.warehouse.dir</name>
-        <value>s3a://metastore/managed/</value>
+        <value>s3a://metastore/hive/</value>
     </property>
     <property>
         <name>metastore.thrift.port</name>
