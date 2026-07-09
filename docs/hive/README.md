@@ -24,3 +24,5 @@ kind load docker-image hive-metastore:3.0.0 --name lakehouse
 kubectl apply -f infra/hive/job.yaml -n metastore
 kubectl apply -f infra/hive/deployment.yaml -n metastore
 kubectl apply -f infra/hive/service.yaml -n metastore
+
+# TO DO: create custom Helm Chart for Hive Metastore and deploy it using Helm.
