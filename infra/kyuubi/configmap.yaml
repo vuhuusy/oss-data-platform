@@ -106,7 +106,9 @@ data:
     spark.hadoop.fs.s3a.connection.ssl.enabled=false
     spark.hadoop.fs.s3a.committer.name=magic
     spark.hadoop.fs.s3a.committer.magic.enabled=true
-    spark.hadoop.fs.s3a.committer.magic.track.commits.in.memory.enabled=false
+    spark.hadoop.fs.s3a.committer.magic.track.commits.in.memory.enabled=true
     spark.hadoop.fs.s3a.committer.abort.pending.uploads=true
+    spark.hadoop.hive.metastore.uris=thrift://hive-metastore.metastore.svc.cluster.local:9083
+    spark.hadoop.hive.metastore.warehouse.dir=s3a://metastore/hive
     spark.sql.sources.commitProtocolClass=org.apache.spark.internal.io.cloud.PathOutputCommitProtocol
     spark.sql.parquet.output.committer.class=org.apache.spark.internal.io.cloud.BindingParquetOutputCommitter
