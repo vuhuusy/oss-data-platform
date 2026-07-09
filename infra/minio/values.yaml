@@ -436,6 +436,11 @@ buckets:
     purge: false
     versioning: false
     objectlocking: false
+  - name: jars
+    policy: none
+    purge: false
+    versioning: false
+    objectlocking: false
   #   # Name of the bucket
   # - name: bucket1
   #   # Policy to be set on the
