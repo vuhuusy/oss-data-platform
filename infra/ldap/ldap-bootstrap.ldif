@@ -1,3 +1,7 @@
+dn: ou=people,dc=lakehouse,dc=local
+objectClass: organizationalUnit
+ou: people
+
 dn: ou=svc,dc=lakehouse,dc=local
 objectClass: organizationalUnit
 ou: svc
