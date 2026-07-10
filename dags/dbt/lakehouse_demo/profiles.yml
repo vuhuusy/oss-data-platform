@@ -5,7 +5,7 @@ lakehouse_demo:
     dev:
       type: spark
       method: thrift
-      host: "{{ env_var('KYUUBI_HOST', 'kyuubi-thrift-binary.kyuubi.svc.cluster.local') }}"
+      host: "{{ env_var('KYUUBI_HOST', 'kyuubi-thrift-binary.compute.svc.cluster.local') }}"
       port: "{{ env_var('KYUUBI_PORT', '10009') | int }}"
       user: "sy"
       password: "UserPassword"
