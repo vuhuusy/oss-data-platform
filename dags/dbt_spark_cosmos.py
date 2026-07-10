@@ -16,11 +16,11 @@ DAG_DIR = Path(__file__).resolve().parent
 # dags/
 # ├── dbt_spark_cosmos.py
 # └── dbt/
-#     └── lakehouse_demo/
+#     └── demo/
 #         ├── dbt_project.yml
 #         ├── profiles.yml
 #         └── models/
-DBT_PROJECT_DIR = DAG_DIR / "dbt" / "lakehouse_demo"
+DBT_PROJECT_DIR = DAG_DIR / "dbt" / "demo"
 DBT_PROFILES_YML = DBT_PROJECT_DIR / "profiles.yml"
 
 project_config = ProjectConfig(
@@ -28,7 +28,7 @@ project_config = ProjectConfig(
 )
 
 profile_config = ProfileConfig(
-    profile_name="lakehouse_demo",
+    profile_name="dbt_spark_iceberg_demo",
     target_name="prod",
     profiles_yml_filepath=str(DBT_PROFILES_YML),
 )
