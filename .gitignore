@@ -1,4 +1,4 @@
 .venv-dbt
-dags/dbt/lakehouse_demo/logs
-dags/dbt/lakehouse_demo/.user.yml
-dags/dbt/lakehouse_demo/target
+dags/dbt/demo/logs
+dags/dbt/demo/.user.yml
+dags/dbt/demo/target
