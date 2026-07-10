@@ -29,7 +29,7 @@ project_config = ProjectConfig(
 
 profile_config = ProfileConfig(
     profile_name="lakehouse_demo",
-    target_name="dev",
+    target_name="prod",
     profiles_yml_filepath=str(DBT_PROFILES_YML),
 )
 
