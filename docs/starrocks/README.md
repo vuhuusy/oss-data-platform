@@ -6,9 +6,9 @@ helm search repo starrocks
 
 helm show values starrocks/kube-starrocks > infra/starrocks/values.yaml
 
-helm install starrocks starrocks/kube-starrocks -f infra/starrocks/values.yaml -n compute
+helm upgrade --install starrocks starrocks/kube-starrocks -f infra/starrocks/values.yaml -n compute
 
-kubectl port-forward svc/kube-starrocks-fe-service 8030:8030 -n compute &
+kubectl port-forward svc/kube-starrocks-fe-service 9030:9030 -n compute &
 ```
 
 # Create External Catalog in StarRocks
