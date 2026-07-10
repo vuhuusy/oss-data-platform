@@ -15,7 +15,7 @@ clean-targets:
 models:
   lakehouse_demo:
     staging:
-      +materialized: view
+      +materialized: table
       +schema: staging
 
     marts:
