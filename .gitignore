@@ -1,0 +1,3 @@
+.venv-dbt
+dags/dbt/lakehouse_demo/logs
+dags/dbt/lakehouse_demo/.user.yml
