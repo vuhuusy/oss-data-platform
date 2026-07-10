@@ -34,7 +34,7 @@ profile_config = ProfileConfig(
 )
 
 execution_config = ExecutionConfig(
-    execution_mode=ExecutionMode.LOCAL,
+    execution_mode=ExecutionMode.WATCHER,
 )
 
 with DAG(
