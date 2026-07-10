@@ -64,7 +64,7 @@ data:
     spark.sql.catalog.iceberg=org.apache.iceberg.spark.SparkCatalog
     spark.sql.catalog.iceberg.type=hive
     spark.sql.catalog.iceberg.uri=thrift://hive-metastore.metastore.svc.cluster.local:9083
-    spark.sql.defaultCatalog=spark_catalog
+    spark.sql.defaultCatalog=iceberg
     spark.sql.catalog.iceberg.warehouse=s3a://metastore/iceberg
 
     # Dynamic Allocation
