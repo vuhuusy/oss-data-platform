@@ -1,0 +1,11 @@
+astronomer-cosmos==1.15.0
+dbt-core==1.11.11
+dbt-spark==1.10.1
+
+# PyHive[hive]==0.7.0
+# thrift==0.23.0
+# thrift-sasl==0.4.3
+# pure-sasl==0.6.2
+
+apache-airflow-providers-apache-spark==6.2.0
+apache-airflow-providers-cncf-kubernetes==10.19.0
