@@ -1,36 +1,49 @@
-from datetime import datetime
+from __future__ import annotations
 
-from airflow import DAG
+from datetime import datetime
+from pathlib import Path
+
+from airflow.sdk import DAG
 from cosmos import DbtTaskGroup, ExecutionConfig, ProfileConfig, ProjectConfig
 from cosmos.constants import ExecutionMode
+from cosmos.profiles import SparkThriftProfileMapping
 
-DBT_PROJECT_PATH = "/opt/airflow/dbt/lakehouse_demo"
-DBT_PROFILES_PATH = "/opt/airflow/dbt/lakehouse_demo"
+
+# git-sync mounts repository/dags at /opt/airflow/dags.
+DAG_DIR = Path(__file__).resolve().parent
+DBT_PROJECT_DIR = DAG_DIR / "dbt" / "lakehouse_demo"
+
+project_config = ProjectConfig(
+    dbt_project_path=str(DBT_PROJECT_DIR),
+)
+
+profile_config = ProfileConfig(
+    profile_name="lakehouse_demo",
+    target_name="dev",
+    profile_mapping=SparkThriftProfileMapping(
+        conn_id="kyuubi_thrift",
+        profile_args={
+            "schema": "default",
+        },
+    ),
+)
+
+execution_config = ExecutionConfig(
+    execution_mode=ExecutionMode.LOCAL,
+)
 
 with DAG(
-    dag_id="dbt_spark_cosmos_demo",
-    description="Run dbt-spark models through Kyuubi using Cosmos",
-    start_date=datetime(2026, 1, 1),
+    dag_id="dbt_spark_cosmos",
+    description="Run dbt Spark models through Kyuubi using Astronomer Cosmos",
+    start_date=datetime(2026, 7, 1),
     schedule=None,
     catchup=False,
-    render_template_as_native_obj=True,
+    max_active_runs=1,
     tags=["dbt", "spark", "kyuubi", "cosmos"],
 ) as dag:
-    dbt_spark_models = DbtTaskGroup(
-        group_id="dbt_spark_models",
-        project_config=ProjectConfig(
-            dbt_project_path=DBT_PROJECT_PATH,
-        ),
-        profile_config=ProfileConfig(
-            profiles_yml_filepath=f"{DBT_PROFILES_PATH}/profiles.yml",
-            profile_name="lakehouse_demo",
-            target_name="dev",
-        ),
-        execution_config=ExecutionConfig(
-            execution_mode=ExecutionMode.LOCAL,
-            dbt_executable_path="/home/airflow/.local/bin/dbt",
-        ),
-        operator_args={
-            "install_deps": False,
-        },
+    dbt_run = DbtTaskGroup(
+        group_id="dbt_run",
+        project_config=project_config,
+        profile_config=profile_config,
+        execution_config=execution_config,
     )
