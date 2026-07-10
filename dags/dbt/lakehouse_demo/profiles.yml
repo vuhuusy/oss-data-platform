@@ -8,9 +8,10 @@ lakehouse_demo:
 
       host: "{{ env_var('KYUUBI_HOST', 'kyuubi-thrift-binary.kyuubi.svc.cluster.local') }}"
       port: "{{ env_var('KYUUBI_PORT', '10009') | int }}"
-
+      user: "sy"
+      password: "UserPassword"
       schema: default
-      auth: NOSASL
+      auth: LDAP
 
       threads: 2
       connect_timeout: 30
