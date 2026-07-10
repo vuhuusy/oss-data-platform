@@ -1,23 +1,29 @@
-name: lakehouse_demo
+name: dbt_spark_iceberg_demo
 version: "1.0.0"
 config-version: 2
-
-profile: lakehouse_demo
-
-model-paths:
-  - models
-
-target-path: target
-clean-targets:
-  - target
-  - dbt_packages
-
+profile: dbt_spark_iceberg_demo
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
 models:
-  lakehouse_demo:
-    staging:
-      +materialized: table
-      +schema: staging
-
+  dbt_spark_iceberg_demo:
+    +file_format: iceberg
+    +catalog: iceberg
+    +schema: demo
+    staging: {+materialized: view}
+    intermediate: {+materialized: ephemeral}
     marts:
       +materialized: table
-      +schema: mart
+      +tblproperties: {"format-version": "2", "write.format.default": parquet}
+seeds:
+  dbt_spark_iceberg_demo:
+    +schema: raw
+    +quote_columns: false
+snapshots:
+  dbt_spark_iceberg_demo:
+    +target_schema: snapshots

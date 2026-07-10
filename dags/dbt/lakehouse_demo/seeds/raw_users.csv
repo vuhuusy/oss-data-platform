@@ -1,0 +1,4 @@
+user_id,user_name,email,city,updated_at
+1,Alice,alice@example.com,Hanoi,2026-07-01 08:00:00
+2,Bob,bob@example.com,Ho Chi Minh City,2026-07-01 08:00:00
+3,Sy,charlie@example.com,Da Nang,2026-07-01 08:00:00

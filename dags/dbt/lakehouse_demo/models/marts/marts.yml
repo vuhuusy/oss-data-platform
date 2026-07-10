@@ -1,0 +1,19 @@
+version: 2
+models:
+  - name: dim_users
+    columns:
+      - name: user_id
+        tests: [not_null, unique]
+  - name: fct_events
+    columns:
+      - name: event_id
+        tests: [not_null, unique]
+      - name: user_id
+        tests:
+          - relationships: {to: ref('dim_users'), field: user_id}
+      - name: event_value
+        tests: [non_negative]
+  - name: agg_daily_events
+    columns:
+      - name: event_date
+        tests: [not_null]

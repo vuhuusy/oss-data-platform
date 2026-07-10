@@ -1,6 +1,6 @@
-select
-    cast(id as bigint) as event_id,
-    cast(event_name as string) as event_name,
-    cast(event_ts as timestamp) as event_ts,
-    cast(user_id as bigint) as user_id
-from {{ source('raw', 'events') }}
+{{ config(materialized='view') }}
+select cast(event_id as bigint) event_id, cast(user_id as bigint) user_id,
+       trim(event_name) event_name, cast(event_ts as timestamp) event_ts,
+       cast(event_value as decimal(18,2)) event_value,
+       to_date(cast(event_ts as timestamp)) event_date
+from {{ source('raw', 'raw_events') }}
