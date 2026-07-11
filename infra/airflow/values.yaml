@@ -477,10 +477,12 @@ extraConfigMaps: {}
 # Extra env 'items' that will be added to the definition of Airflow containers
 # a string is expected (templated).
 # TODO: difference from `env`? This is a templated string. Probably should template `env` and remove this.
-extraEnv: ~
-# extraEnv: |
-#   - name: AIRFLOW__CORE__LOAD_EXAMPLES
-#     value: 'True'
+extraEnv: |
+  - name: CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: airflow-keycloak
+        key: CLIENT_SECRET
 
 # Extra envFrom 'items' that will be added to the definition of Airflow containers
 # A string is expected (templated).
@@ -901,7 +903,7 @@ workers:
   # (deprecated, use `workers.celery.persistence` instead)
   persistence:
     # Enable persistent volumes (deprecated, use `workers.celery.persistence.enabled` instead)
-    enabled: true
+    enabled: false
 
     # This policy determines whether PVCs should be deleted when StatefulSet is scaled down or removed
     # (deprecated, use `workers.celery.persistence.persistentVolumeClaimRetentionPolicy` instead)
@@ -1159,7 +1161,7 @@ workers:
     # Note: This parameter is transitional for chart 1.2x. In chart 2.x, log groomer will
     # work without persistence by default and this parameter will be removed.
     # (deprecated, use `workers.celery.logGroomerSidecar.requirePersistence` instead)
-    requirePersistence: true
+    requirePersistence: false
 
     # Command to use when running the Airflow Celery worker log groomer sidecar (templated)
     # (deprecated, use `workers.celery.logGroomerSidecar.command` instead)
@@ -1415,7 +1417,7 @@ workers:
     # Persistence volume configuration for Airflow Celery workers
     persistence:
       # Enable persistent volumes
-      enabled: ~
+      enabled: false
 
       # This policy determines whether PVCs should be deleted when StatefulSet is scaled down or removed
       persistentVolumeClaimRetentionPolicy: ~
@@ -2663,7 +2665,7 @@ webserver:
   #   # Flask-WTF flag for CSRF
   #   CSRF_ENABLED = True
 
-  webserverConfigConfigMapName: ~
+  webserverConfigConfigMapName: airflow-webserver-config
 
   service:
     type: ClusterIP
@@ -2802,7 +2804,7 @@ triggerer:
 
   persistence:
     # Enable persistent volumes
-    enabled: true
+    enabled: false
 
     # This policy determines whether PVCs should be deleted when StatefulSet is scaled down or removed.
     persistentVolumeClaimRetentionPolicy: ~
@@ -3862,7 +3864,7 @@ redis:
 
   persistence:
     # Enable persistent volumes
-    enabled: true
+    enabled: false
 
     # Volume size for worker StatefulSet
     size: 1Gi

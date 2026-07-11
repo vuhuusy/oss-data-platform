@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: airflow-webserver-config
+  namespace: operation
+data:
+  webserver_config.py: |
+    from airflow.providers.fab.auth_manager.security_manager.override import (
+    FabAirflowSecurityManagerOverride,
+    )
+
+    from flask_appbuilder.security.manager import AUTH_OAUTH
+
+    AUTH_TYPE = AUTH_OAUTH
+
+    AUTH_USER_REGISTRATION = True
+
+    AUTH_USER_REGISTRATION_ROLE = "Viewer"
+
+    AUTH_ROLES_SYNC_AT_LOGIN = True
+
+    AUTH_ROLES_MAPPING = {
+        "airflow-admin": ["Admin"],
+        "airflow-user": ["User"],
+        "airflow-op": ["Op"],
+        "airflow-viewer": ["Viewer"],
+    }
+
+    OAUTH_PROVIDERS = [
+        {
+            "name": "keycloak",
+            "icon": "fa-key",
+            "token_key": "access_token",
+            "remote_app": {
+                "client_id": "airflow",
+                "client_secret": os.environ["CLIENT_SECRET"],
+                "server_metadata_url":
+                    "http://keycloak.security.svc.cluster.local:8080/realms/lakehouse/.well-known/openid-configuration",
+                "client_kwargs": {
+                    "scope": "openid profile email"
+                },
+            },
+        },
+    ]
+
+    SECURITY_MANAGER_CLASS = FabAirflowSecurityManagerOverride
