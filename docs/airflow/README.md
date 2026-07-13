@@ -6,9 +6,12 @@ helm repo update
 helm search repo airflow
 helm show values airflow/airflow > infra/airflow/values.yaml
 
+
+k apply -f infra/airflow/configmap.yaml -n operation
+k apply -f infra/airflow/secret.yaml -n operation
 helm upgrade --install airflow airflow/airflow -f infra/airflow/values.yaml -n operation --create-namespace
 
 kubectl port-forward svc/airflow-api-server 8080:8080 -n operation &
 
 
-helm uninstall airflow -n operation 
+helm uninstall airflow -n operation
