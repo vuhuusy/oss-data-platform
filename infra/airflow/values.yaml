@@ -62,10 +62,10 @@ containerLifecycleHooks: {}
 airflowHome: /opt/airflow
 
 # Default Airflow repository -- overridden by all the specific images below
-defaultAirflowRepository: apache/airflow
+truedefaultAirflowRepository: apache/airflow-dbt-cosmos
 
 # Default Airflow tag to deploy
-defaultAirflowTag: "3.2.2"
+defaultAirflowTag: "slim-3.2.2-python3.12"
 
 # Default Airflow digest. If specified, it takes precedence over tag
 defaultAirflowDigest: ~
@@ -2040,7 +2040,7 @@ scheduler:
 # Airflow create user job settings
 createUserJob:
   # Whether the create user job should be created
-  enabled: true
+  enabled: false
 
   # Create initial user.
   defaultUser:
@@ -4238,7 +4238,7 @@ config:
     # This is ignored when used with the official Docker image
     load_examples: 'False'
     executor: '{{ .Values.executor }}'
-    auth_manager: "airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager"
+    auth_manager: "airflow.providers.keycloak.auth_manager.keycloak_auth_manager.KeycloakAuthManager"
   logging:
     remote_logging: '{{- ternary "True" "False" (or .Values.elasticsearch.enabled .Values.opensearch.enabled) }}'
     colored_console_log: 'False'
